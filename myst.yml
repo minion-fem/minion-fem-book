@@ -1,0 +1,24 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: 663d51db-5560-4c62-8029-7240131c2dba
+  title: Minion FEM
+  description: A portfolio of Minion, a finite element solver I built from scratch
+  keywords: [finite element method, FEM, CAE, nonlinear geometry, plasticity, topology optimization]
+  authors:
+    - name: Chouchou Ching, Baby Racoon
+  toc:
+    - file: intro.md
+    - title: "Element Formulation"
+      children:
+        - file: elements/intro.md
+        - file: elements/nlgeom.md
+        - file: elements/integration.md
+    - title: "Material Models"
+      children:
+        - file: materials/intro.md
+    - title: "Nonlinear Solver"
+      children:
+        - file: solver/intro.md
+site:
+  template: book-theme
