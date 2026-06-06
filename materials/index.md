@@ -1,5 +1,6 @@
 ---
 title: "Material Models"
+slug: material-models
 ---
 
 # Material Models

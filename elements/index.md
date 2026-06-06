@@ -1,5 +1,6 @@
 ---
 title: "Finite Element"
+slug: finite-element
 ---
 
 # Finite Element
