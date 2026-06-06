@@ -30,11 +30,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Jupyter Book
-        run: pip install jupyter-book
+      - name: Install MyST
+        run: pip install mystmd
 
       - name: Build HTML
-        run: jupyter-book build --html
+        run: myst build --html
 
       - uses: actions/upload-pages-artifact@v3
         with:
