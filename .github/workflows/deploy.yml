@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'feature/**']
   workflow_dispatch:
 
 permissions:
@@ -26,15 +26,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: '3.11'
+          node-version: '20'
 
-      - name: Install Jupyter Book
-        run: pip install jupyter-book
+      - name: Install MyST
+        run: npm install -g mystmd
 
       - name: Build HTML
-        run: jupyter-book build --html
+        run: myst build --html
 
       - uses: actions/upload-pages-artifact@v3
         with:
