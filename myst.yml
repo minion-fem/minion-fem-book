@@ -36,6 +36,10 @@ project:
         - file: nrto/overview.md
         - file: nrto/fourier_tounn.md
         - file: nrto/results.md
+    - file: hpc/index.md
+      children:
+        - file: hpc/cache_optimization.md
+        - file: hpc/vtune.md
 site:
   template: book-theme
   base_url: /minion-fem-book
