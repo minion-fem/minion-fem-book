@@ -1,6 +1,5 @@
 ---
 title: "Neural Topology Optimisation"
-slug: neural-topology-optimisation
 ---
 
 # Neural Topology Optimisation

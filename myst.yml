@@ -9,29 +9,29 @@ project:
     - name: Chouchou Ching, Yuanyuan Kong
   toc:
     - file: intro.md
-    - file: elements/index.md
+    - file: elements/finite-element.md
       children:
         - file: elements/formulation.md
         - file: elements/nlgeom.md
         - file: elements/integration.md
         - file: elements/locking.md
-    - file: materials/index.md
+    - file: materials/material-models.md
       children:
         - file: materials/elasticity.md
         - file: materials/j2_plasticity.md
         - file: materials/perzyna.md
         - file: materials/viscoplasticity.md
-    - file: solver/index.md
+    - file: solver/nonlinear-solver.md
       children:
         - file: solver/newton_raphson.md
-    - file: linear_algebra/index.md
+    - file: linear_algebra/linear-algebra.md
       children:
         - file: linear_algebra/sparse_matrix.md
         - file: linear_algebra/direct.md
         - file: linear_algebra/iterative.md
         - file: linear_algebra/amg.md
         - file: linear_algebra/saddle_point.md
-    - file: nrto/index.md
+    - file: nrto/nrto.md
       children:
         - file: nrto/overview.md
         - file: nrto/fourier_tounn.md

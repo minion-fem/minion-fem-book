@@ -1,6 +1,5 @@
 ---
 title: "Nonlinear Solver"
-slug: nonlinear-solver
 ---
 
 # Nonlinear Solver

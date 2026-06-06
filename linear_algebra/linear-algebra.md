@@ -1,6 +1,5 @@
 ---
 title: "Linear Algebra"
-slug: linear-algebra
 ---
 
 # Linear Algebra
