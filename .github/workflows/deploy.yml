@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, 'feature/**']
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -14,6 +14,9 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  BASE_URL: /${{ github.event.repository.name }}
+
 jobs:
   deploy:
     environment:
@@ -23,17 +26,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-python@v5
         with:
-          node-version: '20'
+          python-version: '3.11'
 
-      - name: Install MyST
-        run: npm install -g mystmd
+      - name: Install Jupyter Book
+        run: pip install jupyter-book
 
       - name: Build HTML
-        run: myst build --html
-        env:
-          BASE_URL: /${{ github.event.repository.name }}
+        run: jupyter-book build --html
 
       - uses: actions/upload-pages-artifact@v3
         with:
