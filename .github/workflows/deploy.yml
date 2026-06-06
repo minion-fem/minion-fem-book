@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'feature/**']
   workflow_dispatch:
 
 permissions:
@@ -14,9 +14,6 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-env:
-  BASE_URL: /${{ github.event.repository.name }}
-
 jobs:
   deploy:
     environment:
@@ -26,15 +23,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-node@v4
         with:
-          python-version: '3.11'
+          node-version: '20'
 
       - name: Install MyST
-        run: pip install mystmd
+        run: npm install -g mystmd
 
       - name: Build HTML
         run: myst build --html
+        env:
+          BASE_URL: /${{ github.event.repository.name }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
