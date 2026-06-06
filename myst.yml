@@ -38,3 +38,4 @@ project:
         - file: nrto/results.md
 site:
   template: book-theme
+  base_url: /minion-fem-book
