@@ -16,7 +16,7 @@ concurrency:
 
 env:
   BASE_URL: /${{ github.event.repository.name }}
-
+  
 jobs:
   deploy:
     environment:
@@ -35,6 +35,8 @@ jobs:
 
       - name: Build HTML
         run: myst build --html
+        env:
+          BASE_URL: /${{ github.event.repository.name }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
