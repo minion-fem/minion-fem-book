@@ -1,83 +1,21 @@
 ---
-title: Minion FEM
+title: FEM under the hood
 ---
 
-# Minion FEM
+# FEM under the hood
 
-Minion is a finite element solver I wrote from scratch in Python. It reads Abaqus-compatible `.inp` files, runs nonlinear implicit structural analyses, and writes field output for post-processing. This site documents the theory behind the key algorithms and shows the solver in action.
+This site documents the theory and implementation of nonlinear finite element algorithms — element formulations, constitutive models, implicit solvers, sparse linear algebra, and physics-informed neural topology optimisation. The reference implementation is **MinionFem**, a Python FEM solver built from scratch by C. Ching and Y. Kong.
 
----
-
-## Capabilities
-
-### Element library
-
-| Element | Type | Integration pts |
-|---|---|---|
-| C3D4 | 4-node linear tetrahedron | 1 |
-| C3D8 | 8-node linear hexahedron | 8 |
-| CPS3 / CPS4 | Plane stress triangle / quad | 1 / 4 |
-| CPE3 / CPE4 | Plane strain triangle / quad | 1 / 4 |
-| B31 / B32 | 2-node / 3-node Timoshenko beam | 1 / 2 |
-
-### Material models
-
-- **Isotropic linear elasticity** — standard $(\lambda, \mu)$ Lamé formulation
-- **J2 plasticity** — elastic predictor / return-mapping corrector with isotropic and kinematic hardening; consistent algorithmic tangent
-- **Viscoplasticity** — Perzyna-type overstress model
-
-### Solver features
-
-- Implicit Newton–Raphson with automatic load stepping
-- Abaqus-compatible convergence check (time-averaged force norm + displacement correction)
-- Geometric nonlinearity (NLGEOM) via Updated Lagrangian: Hughes–Winget objective stress transport, midpoint strain increment, material + geometric tangent stiffness
-- Logarithmic (Hencky) strain output for large-deformation field results
-
-### Input / output
-
-- Abaqus `.inp` reader (parts, assemblies, solid sections, beam sections, surfaces, steps, loads)
-- Custom `.cmd` / dfISE mesh reader
-- JSON intermediate format
-- VTK field output
-
-### Topology optimisation (NRTO)
-
-Minion includes a neural reparametrisation topology optimiser (NRTO) that uses a Fourier-feature neural network to represent the density field, trained by back-propagating through the FEM compliance objective.
+The goal is to show not just what the equations are, but how they are implemented in a real solver — the design choices, the numerical traps, and the connection from theory to code.
 
 ---
 
-## Architecture
+## Topics covered
 
-The solver is organised into three phases:
+- **Element formulation** — isoparametric elements, strain-displacement matrix $\mathbf{B}$, geometric nonlinearity, B-bar locking fix
+- **Material models** — linear elasticity, J2 plasticity with return mapping, Anand viscoplasticity
+- **Nonlinear solver** — implicit Newton–Raphson, load stepping, Abaqus convergence criteria
+- **Linear algebra** — CSR sparse assembly, CHOLMOD / PETSc GAMG solver backends
+- **Neural topology optimisation** — FourierTOuNN, SIMP compliance minimisation, unstructured mesh support
 
-```
-Input (.inp / .cmd / .json)
-        │
-        ▼
-  ReadInputPhase       ← parse and validate; produce IxFem data objects
-        │
-        ▼
-  PxFem packager       ← assemble AxFem: mesh, sections, materials, steps
-        │
-        ▼
-  AnalysisPhase        ← time-step loop → Newton loop → element update loop
-        │
-        ▼
-  VTK / JSON output
-```
 
-Each analysis step drives a Newton–Raphson loop. Element stiffness and internal force contributions are assembled into a global CSR sparse system and solved with a direct (SciPy) or iterative (PETSc CG + GAMG) solver.
-
----
-
-## Site map
-
-- **Element formulation** — shape functions, strain-displacement matrix $\mathbf{B}$, geometric nonlinearity, numerical integration
-- **Material models** — J2 return mapping, consistent tangent, hardening laws
-- **Nonlinear solver** — load increments, Newton iterations, Abaqus convergence criteria
-- **Topology optimisation** — FourierTOuNN, compliance minimisation, 2D and 3D demos
-
-The **Appendix** covers the sparse linear algebra background: stiffness-matrix sparsity patterns, direct assembly, Richardson iteration, and conjugate gradients.
-
-```{tableofcontents}
-```

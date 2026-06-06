@@ -1,28 +1,10 @@
 ---
-title: "Material Models"
+title: "J2 Plasticity"
 ---
 
-# Material Models
+# J2 Plasticity with Return Mapping
 
-Minion implements three material models. All are formulated in the corotational frame and tested against Abaqus reference solutions.
-
----
-
-## Isotropic linear elasticity
-
-The stress–strain relation in Voigt notation is $\boldsymbol{\sigma} = \mathbf{C}^e \boldsymbol{\varepsilon}$, where the 6×6 material Jacobian $\mathbf{C}^e$ is the standard Lamé matrix parameterised by Young's modulus $E$ and Poisson's ratio $\nu$:
-
-$$C^e_{ijkl} = \lambda\,\delta_{ij}\delta_{kl} + \mu(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk})$$
-
-$$\lambda = \frac{E\nu}{(1+\nu)(1-2\nu)}, \qquad \mu = \frac{E}{2(1+\nu)}$$
-
-This is the base elastic model and is also used as the elastic predictor inside the plasticity routine.
-
----
-
-## J2 plasticity with return mapping
-
-### Yield criterion
+## Yield criterion
 
 The J2 (von Mises) yield function with combined isotropic and kinematic hardening is:
 
@@ -32,7 +14,7 @@ where $\boldsymbol{\xi} = \text{dev}(\boldsymbol{\sigma}) - \boldsymbol{\beta}$ 
 
 The Voigt norm $\|\boldsymbol{\xi}\|$ uses the inner product $\boldsymbol{\xi}:\boldsymbol{\xi} = \xi_{ij}\xi_{ij}$, which in engineering-shear Voigt form is $\xi_{xx}^2 + \xi_{yy}^2 + \xi_{zz}^2 + \tfrac{1}{2}(\gamma_{xy}^2 + \gamma_{yz}^2 + \gamma_{xz}^2)$.
 
-### Elastic predictor / plastic corrector
+## Elastic predictor / plastic corrector
 
 Given strain increment $\Delta\boldsymbol{\varepsilon}$ and old state $(\boldsymbol{\sigma}^n, \boldsymbol{\varepsilon}^p_n, \boldsymbol{\beta}^n, \alpha_n)$:
 
@@ -58,7 +40,7 @@ $$\boldsymbol{\varepsilon}^p_{n+1} = \boldsymbol{\varepsilon}^p_n + \Delta\bolds
 
 $$\boldsymbol{\sigma}_{n+1} = \text{hydro}(\boldsymbol{\sigma}^\text{tr}) + \text{dev}(\boldsymbol{\sigma}^\text{tr}) - 2G\Delta\gamma\,\mathbf{n}_{n+1}$$
 
-### Consistent algorithmic tangent
+## Consistent algorithmic tangent
 
 The consistent tangent (required for quadratic Newton convergence) is:
 
@@ -69,13 +51,3 @@ where:
 $$\theta = 1 - \frac{2G\Delta\gamma}{\xi^\text{tr}_\text{eq}}, \qquad \bar\theta = \frac{1}{1+\frac{K'+H'}{3G}} - (1-\theta)$$
 
 The $\mathbf{n}\otimes\mathbf{n}$ correction makes the tangent depend on the direction of plastic flow; it reduces to the elastic tangent when $\Delta\gamma \to 0$ (continuous transition at the elastic–plastic boundary).
-
----
-
-## Viscoplasticity
-
-Minion also implements a Perzyna-type viscoplastic model where plastic flow is allowed outside the rate-independent yield surface. The overstress function controls the flow rate:
-
-$$\dot{\boldsymbol{\varepsilon}}^{vp} = \frac{1}{\eta}\left\langle \frac{f(\boldsymbol{\sigma})}{\sigma_{y0}} \right\rangle^m \mathbf{n}$$
-
-This is useful for modelling materials with strain-rate-dependent hardening (e.g. solder alloys, polymers at elevated temperature).

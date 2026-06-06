@@ -1,10 +1,10 @@
 ---
-title: "Nonlinear Solver"
+title: "Newton-Raphson Scheme"
 ---
 
 # Nonlinear Solver
 
-Minion uses an implicit incremental-iterative Newton–Raphson scheme, closely following the Abaqus formulation. The same framework handles both linear elastic problems (one Newton iteration per step) and strongly nonlinear problems (large deformation, plasticity).
+Implicit nonlinear structural analysis is driven by an incremental-iterative Newton–Raphson scheme, following the Abaqus formulation. The same framework handles both linear elastic problems (one Newton iteration per step) and strongly nonlinear problems (large deformation, plasticity).
 
 ---
 
@@ -23,7 +23,7 @@ for each load increment n = 1 … N:
     u_{n+1} = u^{k+1}
 ```
 
-All element stiffness and internal-force contributions are assembled into a global CSR sparse system in the inner loop. The linear solve uses either the SciPy direct solver (UMFPACK) or PETSc CG + GAMG for large 3D models.
+All element stiffness and internal-force contributions are assembled into a global CSR sparse system in the inner loop. The linear solve uses a direct solver (CHOLMOD or SuperLU) or PETSc CG + GAMG for large 3D models — see [Linear Algebra](../linear_algebra/intro.md).
 
 ---
 
@@ -59,17 +59,11 @@ The load increment size $\Delta t$ is controlled automatically:
 
 ## Stiffness update strategies
 
-Two convergence strategies are available and selected per-step in the input:
+Two Newton strategies are common in commercial FEM codes:
 
 | Strategy | Behaviour |
 |---|---|
-| `ABAQUS` | Standard full Newton; stiffness reformed every iteration |
-| `SYNOPSYS` | Modified Newton with optional stiffness freeze; fewer factorizations |
+| Full Newton | Stiffness reformed every iteration; quadratic convergence near solution |
+| Modified Newton | Stiffness frozen for several iterations; fewer factorisations, slower convergence |
 
-The Abaqus strategy provides quadratic convergence near the solution. The Synopsys strategy trades convergence rate for cheaper iterations — useful when the factorisation cost dominates (large models, direct solver).
-
----
-
-## Linear solver
-
-For small to medium models, SciPy's UMFPACK-based direct solver (`scipy.sparse.linalg.spsolve`) is used. For large 3D models (tens of thousands of DOFs), Minion optionally delegates to PETSc with a CG + GAMG (algebraic multigrid) preconditioner. Node coordinates are passed to GAMG for geometry-aware coarsening, which substantially accelerates convergence on 3D elasticity systems compared to purely algebraic approaches.
+The full Newton strategy is preferred for problems with strong material nonlinearity (plasticity, large deformation) where the number of iterations matters. Modified Newton reduces cost when each factorisation is expensive relative to the residual evaluation — typical for large 3D models with direct solvers.

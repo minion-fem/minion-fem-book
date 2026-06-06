@@ -4,7 +4,7 @@ title: "Element Formulation"
 
 # Element Formulation
 
-All elements in Minion share the same isoparametric structure. Physical coordinates $\mathbf{x}$ are interpolated from nodal coordinates $\mathbf{x}_I$ using the same shape functions $N_I(\boldsymbol{\xi})$ that interpolate the displacement field:
+All standard isoparametric elements share the same structure: physical coordinates $\mathbf{x}$ are interpolated from nodal coordinates $\mathbf{x}_I$ using the same shape functions $N_I(\boldsymbol{\xi})$ that interpolate the displacement field:
 
 $$\mathbf{x}(\boldsymbol{\xi}) = \sum_I N_I(\boldsymbol{\xi})\,\mathbf{x}_I, \qquad \mathbf{u}(\boldsymbol{\xi}) = \sum_I N_I(\boldsymbol{\xi})\,\mathbf{u}_I$$
 
@@ -36,7 +36,7 @@ $$N_I(\xi,\eta,\zeta) = \frac{1}{8}(1+\xi_I\xi)(1+\eta_I\eta)(1+\zeta_I\zeta)$$
 
 where $(\xi_I, \eta_I, \zeta_I) \in \{-1,+1\}^3$ are the nodal natural coordinates.
 
-Full $2 \times 2 \times 2$ Gauss quadrature (8 integration points, degree 3 exact) is used for the stiffness matrix. Under large deformation (NLGEOM), the Jacobian is evaluated at the current configuration.
+Full $2 \times 2 \times 2$ Gauss quadrature (8 integration points, degree 3 exact) is used for the stiffness matrix. Under large deformation (NLGEOM), the Jacobian is evaluated at the current configuration. The implementation uses the **B-bar method** to prevent volumetric locking for nearly incompressible materials — see [Volumetric Locking](locking.md).
 
 **Use when:** structured meshes or problems where mesh quality can be controlled. Better accuracy per degree of freedom than C3D4 for smooth solutions.
 
@@ -51,7 +51,7 @@ These are plane-strain (CPE) and plane-stress (CPS) formulations. The strain sta
 | CPS3 / CPE3 | 3 (linear triangle) | 1 |
 | CPS4 / CPE4 | 4 (bilinear quad) | 4 |
 
-Topology optimisation in Minion uses the CPS4 element.
+CPS4 is used for 2D topology optimisation.
 
 ---
 
@@ -62,7 +62,7 @@ Topology optimisation in Minion uses the CPS4 element.
 | B31 | 2 | Timoshenko (first-order, 1 integration pt) |
 | B32 | 3 | Timoshenko (second-order, 2 integration pts) |
 
-Both elements use a cross-section database that stores precomputed section properties (area, moments of inertia). The element frame rotates with the beam axis, and local stiffness is assembled into the global system using direction cosines.
+Section properties (area, moments of inertia) are precomputed and stored per element. The element frame rotates with the beam axis; local stiffness is transformed into the global system using direction cosines.
 
 ---
 
@@ -79,10 +79,10 @@ N_{a,y} & N_{a,x} & 0 \\
 N_{a,z} & 0 & N_{a,x}
 \end{bmatrix}$$
 
-Voigt ordering used throughout Minion: $[\varepsilon_{xx},\, \varepsilon_{yy},\, \varepsilon_{zz},\, \gamma_{xy},\, \gamma_{yz},\, \gamma_{xz}]$ with engineering shear $\gamma_{ij} = 2\varepsilon_{ij}$.
+Voigt ordering: $[\varepsilon_{xx},\, \varepsilon_{yy},\, \varepsilon_{zz},\, \gamma_{xy},\, \gamma_{yz},\, \gamma_{xz}]$ with engineering shear $\gamma_{ij} = 2\varepsilon_{ij}$.
 
 The element stiffness matrix is then:
 
 $$\mathbf{K}^e = \int_V \mathbf{B}^T \mathbf{C}\, \mathbf{B}\, dV \approx \sum_g w_g \det(\mathbf{J}_g)\, \mathbf{B}_g^T \mathbf{C}_g\, \mathbf{B}_g$$
 
-Under geometric nonlinearity, $\mathbf{B}$ is evaluated at the current deformed configuration and a geometric stiffness term $\mathbf{K}_\text{geo}$ is added — this is derived in the [NLGEOM theory](nlgeom.md) page.
+Under geometric nonlinearity, $\mathbf{B}$ is evaluated at the current deformed configuration and a geometric stiffness term $\mathbf{K}_\text{geo}$ is added — derivation in [Geometric Nonlinearity](nlgeom.md).

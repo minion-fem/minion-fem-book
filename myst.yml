@@ -2,23 +2,39 @@
 version: 1
 project:
   id: 663d51db-5560-4c62-8029-7240131c2dba
-  title: Minion FEM
-  description: A portfolio of Minion, a finite element solver I built from scratch
-  keywords: [finite element method, FEM, CAE, nonlinear geometry, plasticity, topology optimization]
+  title: FEM under the hood
+  description: Theory and implementation of nonlinear finite element algorithms — elements, constitutive models, implicit solvers, and neural topology optimisation
+  keywords: [finite element method, FEM, nonlinear geometry, plasticity, topology optimization, physics AI, scientific computing]
   authors:
-    - name: Chouchou Ching, Baby Racoon
+    - name: Chouchou Ching, Yuanyuan Kong
   toc:
     - file: intro.md
-    - title: "Element Formulation"
+    - file: elements/index.md
       children:
-        - file: elements/intro.md
+        - file: elements/formulation.md
         - file: elements/nlgeom.md
         - file: elements/integration.md
-    - title: "Material Models"
+        - file: elements/locking.md
+    - file: materials/index.md
       children:
-        - file: materials/intro.md
-    - title: "Nonlinear Solver"
+        - file: materials/elasticity.md
+        - file: materials/j2_plasticity.md
+        - file: materials/perzyna.md
+        - file: materials/viscoplasticity.md
+    - file: solver/index.md
       children:
-        - file: solver/intro.md
+        - file: solver/newton_raphson.md
+    - file: linear_algebra/index.md
+      children:
+        - file: linear_algebra/sparse_matrix.md
+        - file: linear_algebra/direct.md
+        - file: linear_algebra/iterative.md
+        - file: linear_algebra/amg.md
+        - file: linear_algebra/saddle_point.md
+    - file: nrto/index.md
+      children:
+        - file: nrto/overview.md
+        - file: nrto/fourier_tounn.md
+        - file: nrto/results.md
 site:
   template: book-theme
