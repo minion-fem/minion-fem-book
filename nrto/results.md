@@ -21,13 +21,13 @@ Design evolution over 200 iterations. Starting from a uniform density field, the
 
 ## 3D Cantilever Beam
 
-**Setup**: 3D rectangular block, clamped on one face, distributed load on the centre of the opposite face. FourierTOuNN, volume fraction $v_f = 0.3$, 50 iterations.
+**Setup**: 3D rectangular block, clamped on one face, distributed load on the bottom-right edge of the opposite face. FourierTOuNN, volume fraction $v_f = 0.3$, 200 iterations.
 
 :::{figure} images/design_evolution3d.gif
 :width: 80%
 :align: center
 
-3D density field evolution visualised in ParaView. The optimiser carves out internal voids while retaining load-carrying arches and flanges. Final compliance $J \approx 2.68$ — a **17.6% reduction** from the uniform-density baseline $J_0 = 3.251$.
+3D density field evolution visualised in ParaView. The optimiser carves out internal voids while retaining load-carrying arches and flanges. Final compliance $J \approx 2.1254$ — a **65.4% reduction** from the uniform-density baseline $J_0 = 3.251$.
 :::
 
 ---
@@ -37,4 +37,4 @@ Design evolution over 200 iterations. Starting from a uniform density field, the
 | Case | Iterations | $v_f$ | $J_0$ | $J_{\text{final}}$ | Reduction |
 |---|---|---|---|---|---|
 | 2D cantilever | 200 | 0.4 | 105.0 | 72.64 | 30.8% |
-| 3D cantilever | 50 | 0.3 | 3.251 | 2.68 | 17.6% |
+| 3D cantilever | 200 | 0.3 | 3.251 | 2.1254 | 65.4% |
