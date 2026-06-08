@@ -85,4 +85,4 @@ The element stiffness matrix is then:
 
 $$\mathbf{K}^e = \int_V \mathbf{B}^T \mathbf{C}\, \mathbf{B}\, dV \approx \sum_g w_g \det(\mathbf{J}_g)\, \mathbf{B}_g^T \mathbf{C}_g\, \mathbf{B}_g$$
 
-Under geometric nonlinearity, $\mathbf{B}$ is evaluated at the current deformed configuration and a geometric stiffness term $\mathbf{K}_\text{geo}$ is added — derivation in [Geometric Nonlinearity](nlgeom.md).
+Under geometric nonlinearity, $\mathbf{B}$ is evaluated at the current deformed configuration and a geometric stiffness term $\mathbf{K}_\text{geo}$ is added.

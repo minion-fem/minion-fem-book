@@ -4,7 +4,7 @@ title: FEM under the hood
 
 # FEM under the hood
 
-This site documents the theory and implementation of nonlinear finite element algorithms — element formulations, constitutive models, implicit solvers, sparse linear algebra, and physics-informed neural topology optimisation. The reference implementation is **MinionFem**, a Python FEM solver built from scratch by C. Ching and Y. Kong.
+This site documents the theory and implementation of nonlinear finite element algorithms — element formulations, constitutive models, implicit solvers, sparse linear algebra, and physics-informed neural topology optimisation. The reference implementation is **MinionFem**, a Python FEM solver built from scratch by C. Ching and BBQ Raccoon.
 
 The goal is to show not just what the equations are, but how they are implemented in a real solver — the design choices, the numerical traps, and the connection from theory to code.
 
