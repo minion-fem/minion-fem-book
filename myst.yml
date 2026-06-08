@@ -6,13 +6,12 @@ project:
   description: Theory and implementation of nonlinear finite element algorithms — elements, constitutive models, implicit solvers, and neural topology optimisation
   keywords: [finite element method, FEM, nonlinear geometry, plasticity, topology optimization, physics AI, scientific computing]
   authors:
-    - name: Chouchou Ching, Yuanyuan Kong
+    - name: Chouchou Ching, BBQ Raccoon
   toc:
     - file: intro.md
     - file: elements/index.md
       children:
         - file: elements/formulation.md
-        - file: elements/nlgeom.md
         - file: elements/integration.md
         - file: elements/locking.md
     - file: materials/index.md
